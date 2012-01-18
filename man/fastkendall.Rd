@@ -14,6 +14,7 @@ fastkendall(x, y)
 
 \examples{
 x = rnorm(1e4); y=rnorm(1e4)
-fk = fastkendall(x, y)
-stopifnot(fk$kendall.tau == cor(x, y, method="kendall"))
+fastkendall(x, y)
+## for comparison
+cor(x, y, method="kendall")
 }
