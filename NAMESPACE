@@ -1,0 +1,2 @@
+useDynLib(fastkendall)
+export(fastkendall, fastkendall.benchmark)

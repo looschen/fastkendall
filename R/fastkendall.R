@@ -1,7 +1,7 @@
 
-## concor calculates all correlations and concordance counts.
+## fastkendall calculates all correlations and concordance counts.
 
-concor = function(x, y){
+fastkendall = function(x, y){
   if(length(x) != length(y))
     stop("x and y must have the same length")
   if(any(is.na(x)) || any(is.na(y)))
@@ -19,22 +19,22 @@ concor = function(x, y){
 
   result$goodman.kruskal.gamma = (result$concordant - result$discordant) / (result$concordant + result$discordant)
 
-  ## class(result) = "concor"
+  ## class(result) = "fastkendall"
   
   return(result)
 }
   
 
-concor.benchmark = function(l){
+fastkendall.benchmark = function(l){
   ## l: vector of vector lenghts
 
-  result = data.frame(l=l, concor=NA, cor.kendall=NA, cor=NA)
+  result = data.frame(l=l, fastkendall=NA, cor.kendall=NA, cor=NA)
 
   for(i in 1:nrow(result)){
     x = runif(result$l[i])
     y = runif(result$l[i])
     
-    result$concor[i] = system.time(concor(x,y))[3]
+    result$fastkendall[i] = system.time(fastkendall(x,y))[3]
     result$cor[i] = system.time(cor(x, y))[3]
     result$cor.kendall[i] = system.time(cor(x, y, method="kendall"))[3]
   }
