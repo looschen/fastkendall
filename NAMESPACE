@@ -1,2 +1,3 @@
 useDynLib(fastkendall)
-export(fastkendall, fastkendall.benchmark)
+export(fastkendall)
+## not exported: fastkendall.benchmark
