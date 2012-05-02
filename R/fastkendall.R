@@ -6,6 +6,8 @@ fastkendall = function(x, y){
     stop("x and y must have the same length")
   if(any(is.na(x)) || any(is.na(y)))
     return(NA)
+  if(!is.numeric(x) || !is.numeric(y))
+    stop("x and y must be numeric")
   
   cnt = .Call("concordance_count", as.numeric(x), as.numeric(y))
   result = list(
@@ -26,7 +28,7 @@ fastkendall = function(x, y){
   
 
 fastkendall.benchmark = function(l){
-  ## l: vector of vector lenghts
+  ## l: vector of vector lengths
 
   result = data.frame(l=l, fastkendall=NA, cor.kendall=NA, cor=NA)
 
