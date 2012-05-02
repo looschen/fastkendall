@@ -6,10 +6,12 @@
 #include <set>
 #include <vector>
 #include <algorithm>
+#include <stdint.h>
 
 // efficient implementation of Goodman-Kruskal gamma
+// 32-bit count_t will easily overflow!
 
-template<typename T, typename U = size_t>
+template<typename T, typename count_t = uint64_t>
 struct cum_sum_tree{
   // binary tree which maps Y -> n_Y and keeps the cumulative sum of all n_Y with Y_i < Y
   // incomplete, only functions needed for this algorithm.
@@ -23,8 +25,8 @@ struct cum_sum_tree{
     ~node(){ delete(left); delete(right); }
     
     T Y;
-    U n_Y;
-    U subtree_sum;		// sum of n_Y in subtree
+    count_t n_Y;
+    count_t subtree_sum;		// sum of n_Y in subtree
 
     //  private:
     node* left;			// smaller Y
@@ -33,15 +35,15 @@ struct cum_sum_tree{
 
 
   void init(T Y);
-  void add(T Y, U increment, U& sum_before, U& n_equal);
+  void add(T Y, count_t increment, count_t& sum_before, count_t& n_equal);
 
 private:
   node* root;
 };
 
 
-template<typename T, typename U>
-void cum_sum_tree<T, U>::init(T Y){
+template<typename T, typename count_t>
+void cum_sum_tree<T, count_t>::init(T Y){
   // insert a node with n_Y = 0
 
   // search for insertion location
@@ -61,8 +63,8 @@ void cum_sum_tree<T, U>::init(T Y){
 }
 
 
-template<typename T, typename U>
-void cum_sum_tree<T, U>::add(T Y, U increment, U& sum_before, U& n_Y){
+template<typename T, typename count_t>
+void cum_sum_tree<T, count_t>::add(T Y, count_t increment, count_t& sum_before, count_t& n_Y){
   // search and update subtree_sum for each encountered node
 
   sum_before = 0;
@@ -134,9 +136,9 @@ void secondary_sort(forward_iterator X_begin, forward_iterator X_end, random_acc
 
 
 
-template<typename bidirectional_iterator, typename random_access_iterator>
+template<typename bidirectional_iterator, typename random_access_iterator, typename count_t>
 void concordance_count(bidirectional_iterator X_begin, bidirectional_iterator X_end, random_access_iterator Y_begin, random_access_iterator Y_end,
-		       size_t& concordant, size_t& discordant, size_t& extraX, size_t& extraY, size_t& spare){
+		       count_t& concordant, count_t& discordant, count_t& extraX, count_t& extraY, count_t& spare){
   // For Kendall's tau and goodman-kruskal gamma. Correlation for the (X_i, Y_i) pairs
   // use secondary_sort(...) for the required sorting.
   // X_begin, X_end: sorted range
@@ -170,9 +172,9 @@ void concordance_count(bidirectional_iterator X_begin, bidirectional_iterator X_
   // the counting
   concordant = discordant = extraX = extraY = spare= 0;
 
-  size_t spare_inc = 0;
-  size_t extraY_inc = 0;
-  // size_t pos = 0;
+  count_t spare_inc = 0;
+  count_t extraY_inc = 0;
+  // count_t pos = 0;
   // different from X/Y_begin for first iteration of loop:
   typename iterator_traits<bidirectional_iterator>::value_type X_previous = *X_begin + 1;
   typename iterator_traits<random_access_iterator>::value_type Y_previous = *Y_begin + 1;
@@ -192,12 +194,12 @@ void concordance_count(bidirectional_iterator X_begin, bidirectional_iterator X_
       }
     }
 
-    size_t sum_before, n_equal;
+    count_t sum_before, n_equal;
     cst.add(*Y_i, 1, sum_before, n_equal);
 
-    size_t concordant_inc = sum_before - extraY_inc;
-    size_t extraX_inc = n_equal - spare_inc;
-    size_t discordant_inc = i - (concordant_inc + extraX_inc + extraY_inc + spare_inc) + 1;
+    count_t concordant_inc = sum_before - extraY_inc;
+    count_t extraX_inc = n_equal - spare_inc;
+    count_t discordant_inc = i - (concordant_inc + extraX_inc + extraY_inc + spare_inc) + 1;
 
     extraX += extraX_inc;
     extraY += extraY_inc;
@@ -211,11 +213,13 @@ void concordance_count(bidirectional_iterator X_begin, bidirectional_iterator X_
 }
 
 
-double kendall_tau(size_t concordant, size_t discordant, size_t extraX, size_t extraY){
+template<typename count_t>
+double kendall_tau(count_t concordant, count_t discordant, count_t extraX, count_t extraY){
   return  ((double) concordant - discordant) / (sqrt(concordant + discordant + extraX) * sqrt(concordant + discordant + extraY));
 }
 
-double goodman_kruskal_gamma(size_t concordant, size_t discordant){
+template<typename count_t>
+double goodman_kruskal_gamma(count_t concordant, count_t discordant){
   return  ((double) concordant - discordant) / (concordant + discordant);
 }
 

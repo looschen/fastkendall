@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <vector>
+#include <stdint.h>
 // #include <iostream>
 
 #include <R.h>
@@ -99,7 +100,7 @@ extern "C"{
     // reserve result
     SEXP result;
     PROTECT( result = allocVector(REALSXP, 5) );
-    size_t tmp[5];
+    uint64_t tmp[5];
     
     // calculate result
     concordance_count(X_ord.begin(), X_ord.end(), Y_ord.begin(), Y_ord.end(),
