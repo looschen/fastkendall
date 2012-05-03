@@ -63,7 +63,7 @@ fastkendall(x, y)
 cor(x, y, method="kendall")
 
 ## correlate data with ties (probably)
-x = sample(10, 100, replace=T); y = sample(10, 100, replace=T)
+x = sample(10, 100, replace=TRUE); y = sample(10, 100, replace=TRUE)
 fastkendall(x, y)
 }
 \keyword{univar}
