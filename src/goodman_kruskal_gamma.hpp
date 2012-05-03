@@ -8,8 +8,11 @@
 #include <algorithm>
 #include <stdint.h>
 
-// efficient implementation of Goodman-Kruskal gamma
-// 32-bit count_t will easily overflow!
+// Efficient implementation of Goodman-Kruskal gamma and Kendall's tau
+
+/* (Warning) 32-bit count_t will easily overflow in
+concordance_count(), since there are N^2 index pairs (i,j) in a vector
+of length N. Use uint64_t! */
 
 template<typename T, typename count_t = uint64_t>
 struct cum_sum_tree{
@@ -48,7 +51,7 @@ void cum_sum_tree<T, count_t>::init(T Y){
 
   // search for insertion location
   node** current = &root;
-  // node** insert_here = &root;
+
   while(*current != NULL){
     if(Y < (*current)->Y)
       current = &(*current)->left;
@@ -116,9 +119,7 @@ void secondary_sort(forward_iterator X_begin, forward_iterator X_end, random_acc
   for(forward_iterator i = X_begin; i != X_end; ++i){
     // sort if different or end has been reached
     if(*i != *X_previous){
-      // if is wrong:
-      // if(i_begin - i_end >= 2)	// sort if necessary
-      // if correct:
+      // sort if necessary
       if(i_end - i_begin >= 2)
 	std::sort(Y_begin + i_begin, Y_begin + i_end);
       i_begin = i_end;
@@ -222,11 +223,6 @@ template<typename count_t>
 double goodman_kruskal_gamma(count_t concordant, count_t discordant){
   return  ((double) concordant - discordant) / (concordant + discordant);
 }
-
-// double kendall_tau_2(size_t concordant, size_t discordant, size_t extraX, size_t extraY){
-//   // older definition which does not take ties into account
-//   return ((double) concordant - discordant) / (concordant + discordant + extraX + extraY);
-// }
 
 
 #endif /* _GOODMAN_KRUSKAL_GAMMA_H_ */
