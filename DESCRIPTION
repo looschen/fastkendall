@@ -1,8 +1,8 @@
 Package: fastkendall
-Title: Fast Calculation of Kendall's tau and the Goodman-Kruskal-gamma
+Title: Fast Calculation of Kendall's tau and the Goodman-Kruskal gamma
 Version: 0.1
-Date: 2012-01-18
+Date: 2012-05-16
 Author: Karsten Looschen
 Maintainer: Karsten Looschen <karsten.looschen@uni-oldenburg.de>
-Description: Calculate Stuff much faster than cor(..., method="kendall")
+Description: Fast Calculation of Kendall's tau and the Goodman-Kruskal gamma in O(n log(n))
 License: GPL-3

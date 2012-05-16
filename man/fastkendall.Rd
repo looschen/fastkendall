@@ -2,8 +2,8 @@
 \alias{fastkendall}
 \title{Kendall's \eqn{\tau}, Goodman-Kruskal \eqn{\gamma}}
 \description{
-  Fast Calculation of Kendall's \eqn{\tau} and the Goodman-Kruskal \eqn{\gamma} in O(n
-  log(n)).  
+  Fast Calculation of Kendall's \eqn{\tau} and the Goodman-Kruskal
+  \eqn{\gamma} in \eqn{O(n log(n))}.
 }
 \usage{
 fastkendall(x, y)
