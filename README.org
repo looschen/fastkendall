@@ -1,0 +1,34 @@
+#+TITLE: fastkendall Readme
+
+* Overview
+
+Kendall's tau and the related Goodman-Kruskal gamma are rank correlaton coefficients, which compare pairs =(x[i], x[j])= and =(y[i], y[j])= for all =i= and =j=.
+
+These rank correlation coeffients can be calculated in =O(n log(n))=. For large vectors, this is considerably faster than the =O(n^2)= algorithm of =cor(x, y, method="kendall")= in R's standard implementation.  Efficient algorithms are described in Knight (1966) and Christensen (2005). The approach of the latter is used
+here.
+
+
+
+* Installation
+Download the source from the "Downloads" tab.
+Unpack with
+: tar xjvf the-download.tar.gz
+Build the package
+: R CMD build the-download
+, a new file fastkendall-x.y.tar.gz should appear.
+Start R 
+: R
+and install the package
+: install.packages("~/downloads/fasttest/fastkendall_x.y.tar.gz", repos=NULL)
+
+* Usage
+Load the library 
+: library(fastkendall)
+and correlate
+: fastkendall(runif(100), runif(100))
+
+* References
+W. R. Knight. A Computer Method for Calculating Kendall's Tau with UngroupedData. Journal of the American Statistical Association, 61(314):436-439, 1966.
+
+D. Christensen. Fast algorithms for the calculation of Kendall's tau . Computational Statistics, 20:51-62, 2005.
+
