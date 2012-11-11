@@ -19,7 +19,7 @@ Build the package
 Start R 
 : R
 and install the package
-: install.packages("~/downloads/fasttest/fastkendall_x.y.tar.gz", repos=NULL)
+: install.packages("path/to/fastkendall_x.y.tar.gz", repos=NULL)
 
 * Usage
 Load the library 
