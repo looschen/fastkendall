@@ -40,8 +40,7 @@ fastkendall(x, y)
   }
 }
 \author{
-  % replace with new address!
-  Karsten Looschen, \email{karsten.looschen@uni-oldenburg.de}
+  Karsten Looschen, \email{karsten.looschen@gmail.com}
 }
 \references{
   % Knight (1966)
