@@ -1,0 +1,4 @@
+*.o
+*.so
+man/*.pdf
+src/symbols.rds
