@@ -13,10 +13,10 @@ fastkendall(x, y)
 }
 \details{
   Kendall's \eqn{\tau} and the related Goodman-Kruskal \eqn{\gamma} are
-  rank correlaton coefficients, which compare pairs \code{(x[i], x[j])}
+  rank correlation coefficients, which compare pairs \code{(x[i], x[j])}
   and \code{(y[i], y[j])} for all \code{i} and \code{j}.
 
-  These rank correlation coeffients can be calculated in \eqn{O(n
+  These rank correlation coefficients can be calculated in \eqn{O(n
   log(n))}. For large vectors, this is considerably faster than the
   \eqn{O(n^2)} algorithm of \code{cor(x, y, method="kendall")} in R's
   standard implementation.  Efficient algorithms are described in
@@ -45,7 +45,7 @@ fastkendall(x, y)
 \references{
   % Knight (1966)
   W. R. Knight. A Computer Method for Calculating Kendall's Tau with
-  UngroupedData. Journal of the American Statistical Association,
+  Ungrouped Data. Journal of the American Statistical Association,
   61(314):436--439, 1966.
   
   % Christensen (2005)
