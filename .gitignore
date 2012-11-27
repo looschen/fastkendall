@@ -2,3 +2,4 @@
 *.so
 man/*.pdf
 src/symbols.rds
+callgrind.out*
