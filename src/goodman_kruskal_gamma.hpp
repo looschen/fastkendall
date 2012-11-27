@@ -17,15 +17,20 @@ of length N. Use uint64_t! */
 template<typename T, typename count_t = uint64_t>
 struct cum_sum_tree{
   // binary tree which maps Y -> n_Y and keeps the cumulative sum of all n_Y with Y_i < Y
-  // incomplete, only functions needed for this algorithm.
-  // use init with randomly shuffled Y-values to get a more balanced tree.
+  // Incomplete, only functions needed for this algorithm.
+  // Use init with randomly shuffled Y-values to get a more balanced tree.
+  // The reserve function can be used to avoid a large number of allocations,
+  // which is a good idea since the algorithm implemented in this file can
+  // easily calculate the number of needed nodes.
 
-  cum_sum_tree(): root(NULL) {}
-  ~cum_sum_tree(){ delete root; }
+  cum_sum_tree(): node_storage(), root(NULL) {}
+  // no destructor, nodes are stored in node_storage
+  // ~cum_sum_tree(){ delete root; }
 
   struct node{
     node(T Y_): Y(Y_), n_Y(0), subtree_sum(0), left(NULL), right(NULL) {}
-    ~node(){ delete(left); delete(right); }
+    // no destructor, nodes are stored in node_storage
+    // ~node(){ delete(left); delete(right); }
     
     T Y;
     count_t n_Y;
@@ -39,8 +44,10 @@ struct cum_sum_tree{
 
   void init(T Y);
   void add(T Y, count_t increment, count_t& sum_before, count_t& n_equal);
+  void reserve(size_t n);
 
 private:
+  std::vector<node> node_storage;
   node* root;
 };
 
@@ -62,7 +69,9 @@ void cum_sum_tree<T, count_t>::init(T Y){
   }
 
   // insert
-  *current = new node(Y);
+  // *current = new node(Y);
+  node_storage.push_back(Y);
+  *current = &node_storage.back();
 }
 
 
@@ -102,6 +111,13 @@ void cum_sum_tree<T, count_t>::add(T Y, count_t increment, count_t& sum_before, 
   if(current->left)
     sum_before += current->left->subtree_sum;
   n_Y = current->n_Y;
+}
+
+
+template<typename T, typename count_t>
+void cum_sum_tree<T, count_t>::reserve(size_t n){
+  // reserve space for n nodes.
+  node_storage.reserve(n);
 }
 
 
@@ -155,19 +171,19 @@ void concordance_count(bidirectional_iterator X_begin, bidirectional_iterator X_
 
   using namespace std;
 
-  // get unique elements from Y_begin, Y_end by insertion into std::set
+  // get unique elements from Y_begin, Y_end
   typedef typename iterator_traits<random_access_iterator>::value_type Y_value_type;
-  set<Y_value_type> Y_set;
-  for(random_access_iterator i = Y_begin; i != Y_end; ++i)
-    Y_set.insert(*i);
-
-  // put unique elements into a vector and shuffle randomly for a more balanced tree
-  vector<Y_value_type> Y_unique(Y_set.begin(), Y_set.end());
-  random_shuffle(Y_unique.begin(), Y_unique.end());
+  vector<Y_value_type> Y_copy(Y_begin, Y_end);
+  sort(Y_copy.begin(), Y_copy.end());
+  typename vector<Y_value_type>::iterator Y_unique_end = unique(Y_copy.begin(), Y_copy.end());
+    
+  // shuffle for a (hopefully) more balanced tree
+  random_shuffle(Y_copy.begin(), Y_unique_end);
 
   // init tree
   cum_sum_tree<Y_value_type> cst;
-  for(typename vector<Y_value_type>::iterator i = Y_unique.begin(); i != Y_unique.end(); ++i)
+  cst.reserve(Y_unique_end - Y_copy.begin());
+  for(typename vector<Y_value_type>::iterator i = Y_copy.begin(); i != Y_unique_end; ++i)
     cst.init(*i);
   
   // the counting
