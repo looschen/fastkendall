@@ -171,19 +171,15 @@ void concordance_count(bidirectional_iterator X_begin, bidirectional_iterator X_
 
   using namespace std;
 
-  // get unique elements from Y_begin, Y_end
+  // shuffle a copy of Y for a (hopefully) more balanced tree
   typedef typename iterator_traits<random_access_iterator>::value_type Y_value_type;
   vector<Y_value_type> Y_copy(Y_begin, Y_end);
-  sort(Y_copy.begin(), Y_copy.end());
-  typename vector<Y_value_type>::iterator Y_unique_end = unique(Y_copy.begin(), Y_copy.end());
-    
-  // shuffle for a (hopefully) more balanced tree
-  random_shuffle(Y_copy.begin(), Y_unique_end);
-
+  random_shuffle(Y_copy.begin(), Y_copy.end());
+  
   // init tree
   cum_sum_tree<Y_value_type> cst;
-  cst.reserve(Y_unique_end - Y_copy.begin());
-  for(typename vector<Y_value_type>::iterator i = Y_copy.begin(); i != Y_unique_end; ++i)
+  cst.reserve(Y_copy.size());
+  for(typename vector<Y_value_type>::iterator i = Y_copy.begin(); i != Y_copy.end(); ++i)
     cst.init(*i);
   
   // the counting

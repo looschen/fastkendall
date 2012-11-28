@@ -15,7 +15,7 @@ struct compare_other{
   // Don't compare directly but use i, j as indices for another vector/array
   compare_other(const T& other_): other(&other_), compare(compare_t()) {}
 
-  bool operator()(size_t i, size_t j){
+  bool operator()(size_t i, size_t j) const{
     return compare((*other)[i], (*other)[j]);
   }
 
