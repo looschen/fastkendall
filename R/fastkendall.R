@@ -4,7 +4,7 @@ fastkendall = function(x, y=NULL){
   ## In case of a matrix, a list of matrices is returned.
 
   ## no NA-handling
-  if(any(is.na(x)) || any(is.na(y)))
+  if(any(is.na(x)) || (! is.null(y) && any(is.na(y))))
     return(NA)
 
   ## Error handling copied from R's cor
