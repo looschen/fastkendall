@@ -32,8 +32,14 @@ and install the package
 * Usage
 Load the library 
 : library(fastkendall)
-and correlate
+and correlate:
 : fastkendall(runif(100), runif(100))
+
+This also works with matrices:
+: M = matrix(rnorm(10000), 100)
+: N = matrix(rnorm(1000), 100)
+: ## result is a list of huge matrices
+: r.fk = fastkendall(x, y)
 
 * References
 W. R. Knight. A Computer Method for Calculating Kendall's Tau with Ungrouped Data. Journal of the American Statistical Association, 61(314):436-439, 1966.
