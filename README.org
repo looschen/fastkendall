@@ -1,11 +1,8 @@
-#+TITLE: fastkendall Readme
-
 * Overview
 
 Kendall's tau and the related Goodman-Kruskal gamma are rank correlation coefficients, which compare pairs =(x[i], x[j])= and =(y[i], y[j])= for all =i= and =j=.
 
-These rank correlation coefficients can be calculated in =O(n log(n))=. For large vectors, this is considerably faster than the =O(n^2)= algorithm of ~cor(x, y, method="kendall")~ in R's standard implementation.  Efficient algorithms are described in Knight (1966) and Christensen (2005). The approach of the latter is used
-here.
+These rank correlation coefficients can be calculated in =O(n log(n))=. For large vectors, this is considerably faster than the =O(n^2)= algorithm of ~cor(x, y, method="kendall")~ in R's standard implementation.  Efficient algorithms are described in Knight (1966) and Christensen (2005). The approach of the latter is used here.
 
 * Installation
 The easiest way to install R packages from github is to use the tools provided by the /devtools/ package.
@@ -19,27 +16,27 @@ Then install /fastkendall/ directly from github.
 
 * Installation without devtools
 Download the source from the "Downloads" tab.
-Unpack with
+Unpack your download.
 : tar xjvf the-download.tar.gz
-Build the package
+Build the package.
 : R CMD build the-download
-, a new file fastkendall-x.y.tar.gz should appear.
+A new file fastkendall-x.y.tar.gz should appear.
 Start R 
 : R
-and install the package
+and install the package.
 : install.packages("path/to/fastkendall_x.y.tar.gz", repos=NULL)
 
 * Usage
 Load the library 
 : library(fastkendall)
-and correlate:
+and correlate.
 : fastkendall(runif(100), runif(100))
 
-This also works with matrices:
+This also works with matrices.
 : M = matrix(rnorm(10000), 100)
 : N = matrix(rnorm(1000), 100)
 : ## result is a list of huge matrices
-: r.fk = fastkendall(x, y)
+: result = fastkendall(x, y)
 
 * References
 W. R. Knight. A Computer Method for Calculating Kendall's Tau with Ungrouped Data. Journal of the American Statistical Association, 61(314):436-439, 1966.
