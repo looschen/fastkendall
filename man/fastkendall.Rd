@@ -6,10 +6,12 @@
   \eqn{\gamma} in \eqn{O(n log(n))}.
 }
 \usage{
-fastkendall(x, y)
+fastkendall(x, y=NULL)
 }
 \arguments{
-  \item{x, y}{numeric vectors}
+  \item{x}{numeric vector, matrix or data.frame.}
+  \item{y}{numeric vector, matrix or data.frame. Omit (\code{y=NULL}) to
+  correlate columns of \code{x}.}
 }
 \details{
   Kendall's \eqn{\tau} and the related Goodman-Kruskal \eqn{\gamma} are
@@ -24,7 +26,10 @@ fastkendall(x, y)
   the latter is used here.
 }
 \value{
-  A list of values of interest is returned.
+  A list of values of interest is returned. If the given arguments are
+  matrices, fastkendall behaves similar to R's \code{cor}. That is, a
+  list of matrices is returned, which contain the results for each pair
+  of columns.
   \item{concordant}{number of pairs with \code{x[i] < x[j] && y[i] < y[j]}\cr (or inverted "<")}
   \item{discordant}{number of pairs with \code{x[i] < x[j] && y[i] > y[j]}\cr (or inverted "<", ">")}
   \item{extra.x}{number of pairs with \code{x[i] != x[j] && y[i] == y[j]}}
@@ -64,5 +69,14 @@ cor(x, y, method="kendall")
 ## correlate data with ties (probably)
 x = sample(10, 100, replace=TRUE); y = sample(10, 100, replace=TRUE)
 fastkendall(x, y)
+
+## correlate matrices
+M = matrix(rnorm(10000), 100)
+N = matrix(rnorm(1000), 100)
+## result is a list of huge matrices
+r.fk = fastkendall(x, y)
+r.R = cor(x, y, method="kendall")
+## difference is just a small rounding error
+max(abs(r.fk$kendall.tau - r.R))
 }
 \keyword{univar}
